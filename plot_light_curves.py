@@ -3,9 +3,6 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
-import warnings
-
-warnings.filterwarnings("error")
 
 directory = 'light_curves_fausnaugh'
 
@@ -14,13 +11,12 @@ for filename in os.listdir(directory):
     
     time = f['BTJD']
     count = f['cts']
+    background = f['bkg_model']
     uncertainty = f['e_cts']
     
-    plt.errorbar(time, count, yerr = uncertainty, fmt = '.')
-    plt.savefig(os.path.join('light_curves_plot', filename))
+    plt.errorbar(time, count-background, yerr = uncertainty, fmt = '.')
+    plt.xlabel('BTJD')
+    plt.ylabel('counts (- background)')
+    plt.savefig(os.path.join('light_curves_plot', filename), bbox_inches = "tight")
 
     plt.clf()
-
-
-
-
